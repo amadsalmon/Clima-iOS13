@@ -43,7 +43,13 @@ struct WeatherManager {
                     //let dataString = String(data: safeData, encoding: .utf8)
                     //print(dataString!)
                     if let weather = self.parseJSON(weatherData: safeData){
-                        self.delegate?.didUpdateWeather(weather: weather)
+                        /** Long-running tasks such as networking are often executed in the background, and provide a completion handler to signal completion.
+                            Attempting to read or update the UI from a completion handler may cause problems.
+                            Dispatch the call to update the label text to the main thread.
+                         */
+                        DispatchQueue.main.async {
+                            self.delegate?.didUpdateWeather(weather: weather)
+                        }
                     }
                 }
             }
