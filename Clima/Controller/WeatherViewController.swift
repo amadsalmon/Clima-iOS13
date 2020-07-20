@@ -59,7 +59,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         }
     }
     
-    func didUpdateWeather(weather: WeatherModel){
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel){
         cityLabel.text = weather.cityName
         temperatureLabel.text = weather.temperatureString
         print("\(weather.conditionName)")

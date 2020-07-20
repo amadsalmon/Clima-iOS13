@@ -9,7 +9,7 @@
 import Foundation
 
 protocol WeatherManagerDelegate {
-    func didUpdateWeather(weather: WeatherModel)
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel)
     func didFailWithError(error: Error)
 }
 
@@ -49,7 +49,7 @@ struct WeatherManager {
                             Dispatch the call to update the label text to the main thread.
                          */
                         DispatchQueue.main.async {
-                            self.delegate?.didUpdateWeather(weather: weather)
+                            self.delegate?.didUpdateWeather(self, weather: weather)
                         }
                     }
                 }
