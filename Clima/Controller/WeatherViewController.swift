@@ -60,7 +60,10 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
     }
     
     func didUpdateWeather(weather: WeatherModel){
-        
+        cityLabel.text = weather.cityName
+        temperatureLabel.text = weather.temperatureString
+        print("\(weather.conditionName)")
+        conditionImageView.image = UIImage(systemName: "\(weather.conditionName)")
     }
 }
 
