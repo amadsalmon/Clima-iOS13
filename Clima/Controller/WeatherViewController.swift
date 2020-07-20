@@ -65,5 +65,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         print("\(weather.conditionName)")
         conditionImageView.image = UIImage(systemName: "\(weather.conditionName)")
     }
+    
+    func didFailWithError(error: Error) {
+        print(error)
+    }
 }
 

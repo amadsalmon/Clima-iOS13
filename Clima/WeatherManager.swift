@@ -10,6 +10,7 @@ import Foundation
 
 protocol WeatherManagerDelegate {
     func didUpdateWeather(weather: WeatherModel)
+    func didFailWithError(error: Error)
 }
 
 struct WeatherManager {
@@ -36,13 +37,13 @@ struct WeatherManager {
             // 3. Give the session a task
             let task = session.dataTask(with: url) { (data, response, error) in
                 if error != nil {
-                    //print(error!)
+                    self.delegate?.didFailWithError(error: error!)
                     return
                 }
                 if let safeData = data {
                     //let dataString = String(data: safeData, encoding: .utf8)
                     //print(dataString!)
-                    if let weather = self.parseJSON(weatherData: safeData){
+                    if let weather = self.parseJSON(safeData){
                         /** Long-running tasks such as networking are often executed in the background, and provide a completion handler to signal completion.
                             Attempting to read or update the UI from a completion handler may cause problems.
                             Dispatch the call to update the label text to the main thread.
@@ -58,7 +59,7 @@ struct WeatherManager {
         }
     }
     
-    func parseJSON(weatherData: Data) -> WeatherModel?{
+    func parseJSON(_ weatherData: Data) -> WeatherModel?{
         let decoder = JSONDecoder()
         do{
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
@@ -74,7 +75,7 @@ struct WeatherManager {
             
             return weather
         }catch{
-            print(error)
+            delegate?.didFailWithError(error: error)
             return nil
         }
     }
